@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(cors());
 
 app.get("/", (req, res) => {
-  res.send("job Portal Server is running....:);");
+  res.send("Route is working! YaY.....:)");
 });
 
 app.use("/jobs", userRoutes);
