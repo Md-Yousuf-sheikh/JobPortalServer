@@ -1,19 +1,24 @@
+const mongoose = require("mongoose");
+
 const express = require("express");
-const app = express();
 const cors = require("cors");
 
-//middleware
+const app = express();
+
+// * Routes variables
+const userRoutes = require("./routes/jobs.route");
+const authRoutes = require("./routes/auth.route");
+const managerRoutes = require("./routes/manager.route");
+// * Middleware
+
 app.use(express.json());
 app.use(cors());
 
-// route
-// const productRoute = require("./routes/product.routs");
-
 app.get("/", (req, res) => {
-  res.send("Route is working! YaY!");
+  res.send("job Portal Server is running....:);");
 });
 
-// posting to database
-// app.use("/api/v1/product", productRoute);
-
+app.use("/jobs", userRoutes);
+app.use("/user", authRoutes);
+app.use("/manager", managerRoutes);
 module.exports = app;
