@@ -1,6 +1,9 @@
 const {
   signupService,
   findUserByEmailService,
+  getUsersService,
+  getUserDetailsByIdService,
+  updateCandidateRoleService,
 } = require("../services/auth.service");
 const { generateToken } = require("../utils/token");
 
@@ -85,6 +88,71 @@ exports.getMe = async (req, res) => {
     res.status(500).json({
       status: "fail",
       message: "Couldn't Login",
+      error: error.message,
+    });
+  }
+};
+//
+exports.getUsers = async (req, res) => {
+  try {
+    const { role } = req.params;
+    const users = await getUsersService(role);
+    res.status(200).json({
+      status: "Success",
+      message: "Successfully get all the data",
+      data: users,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "failed",
+      error: error.message,
+    });
+  }
+};
+//
+exports.getUserDetailsById = async (req, res) => {
+  try {
+    const { role, id } = req.params;
+    const userDetails = await getUserDetailsByIdService(role, id);
+    if (!userDetails) {
+      return res.status(400).json({
+        status: "failed",
+        message: `Couldn\'t find any ${role} with this id`,
+      });
+    }
+    console.log(role, id);
+    res.status(200).json({
+      status: "Success",
+      message: "Successfully get all the data",
+      data: userDetails,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "failed",
+      error: error.message,
+    });
+  }
+};
+//
+exports.updateCandidateRole = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const update = await updateCandidateRoleService(id);
+    console.log(update);
+    if (!update.modifiedCount) {
+      return res.status(400).json({
+        status: "failed",
+        message: `Couldn\'t find any ${role} with this id`,
+      });
+    }
+    res.status(200).json({
+      status: "Success",
+      message: "Successfully get all the data",
+      data: update,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "failed",
       error: error.message,
     });
   }
